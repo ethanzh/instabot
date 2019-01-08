@@ -11,7 +11,7 @@ data = json.loads(text)
 account_type = data["@type"]
 name = data["name"]
 username = data["alternateName"][1:]
-description = data["description"].replace("\n", " ")
+description = " ".join(data["description"].split())
 
 print("Name: {0}\nUsername: {1}\nAccount Type: {2}\nDescription: {3}".format(name, username, account_type, description))
 
