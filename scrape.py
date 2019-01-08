@@ -12,4 +12,4 @@ with open("scrape_data.txt", "r") as file:
             # print out username
             names.append(tag.getText())
 
-print(make_json(names))
+print(make_json("scrape_data", names))

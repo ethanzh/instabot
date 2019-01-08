@@ -40,7 +40,7 @@ def make_json(filename, usernames):
             account_type = ""
         if public:
             try:
-                name = data["name"]
+                name = data["name"].replace(",", " ")
             except KeyError:
                 name = ""
         try:
@@ -66,9 +66,8 @@ def make_json(filename, usernames):
     return data
 
 
-if len(sys.argv) == 1:
-    raise ValueError("Must provide file name")
-elif len(sys.argv) == 2:
-    raise ValueError("Must provide usernames")
-else:
-    make_json(sys.argv[1], sys.argv[2:])
+if len(sys.argv) != 1:
+    if len(sys.argv) == 2:
+        raise ValueError("Must provide usernames")
+    else:
+        make_json(sys.argv[1], sys.argv[2:])
