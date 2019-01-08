@@ -2,3 +2,5 @@ venv
 .run.py.swp
 .idea
 __pycache__
+scrape_data.txt
+scrape_data.csv
