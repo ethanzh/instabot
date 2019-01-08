@@ -1,2 +1,4 @@
 venv
 .run.py.swp
+.idea
+__pycache__
