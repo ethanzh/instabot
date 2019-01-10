@@ -2,6 +2,10 @@
 
 Determine whether a user is genuine or a bot, based on their follower/following ratio, name, and bio
 
+This is an example of a 'fake' account:
+![fake account](https://raw.githubusercontent.com/ethanzh/instabot/master/static/example.png)
+
+
 ### TODO
 - [x] Get basic information from account, given username 
 - [x] Populate CSV with all account information
