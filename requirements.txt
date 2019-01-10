@@ -1,4 +1,5 @@
 requests
 pyppeteer
+flask
 keras
 beautifulsoup4

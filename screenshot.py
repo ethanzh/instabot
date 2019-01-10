@@ -16,10 +16,11 @@ async def main():
         page = await browser.newPage()
         await page.setViewport({'width': 960, 'height': 1200})
         await page.goto('https://instagram.com/%s' % user)
-        await page.screenshot({'path': 'screenshots/%s.jpeg' % user})
+        await page.screenshot({'path': 'static/screenshots/%s.jpeg' % user})
         await browser.close()
         count += 1
-        print("{0} out of {1} completed".format(count, total))
+        print("{0}/{1} - screenshot".format(count, total))
 
 
-asyncio.get_event_loop().run_until_complete(main())
+def run():
+    asyncio.get_event_loop().run_until_complete(main())

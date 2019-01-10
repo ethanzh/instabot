@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+        <script>
+            {% if initial %}
+            let initialUsername = `{{ initial }}`;
+            {% else %}
+            let initialUsername = null;
+            {% endif %}
+        </script>
+        <style>
+
+            html, body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            .flex-container {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .row {
+                width: auto;
+            }
+
+            .flex-item {
+                padding: 5px;
+                width: 100%;
+                height: 100%;
+                margin: 10px;
+            }
+
+            .btn {
+                position: relative;
+
+                display: block;
+                margin: 30px auto;
+                padding: 0;
+
+                width: 200px;
+                height: 30px;
+
+                overflow: hidden;
+
+                border-width: 0;
+                outline: none;
+                border-radius: 2px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+                background-color: #2ecc71;
+                color: #ecf0f1;
+
+                transition: background-color .3s;
+            }
+
+            .btn:hover, .btn:focus {
+                background-color: #27ae60;
+            }
+
+            .btn > * {
+                position: relative;
+            }
+
+            .btn span {
+                display: block;
+                padding: 12px 24px;
+            }
+
+            .btn:before {
+                content: "";
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+                display: block;
+                width: 0;
+                padding-top: 0;
+
+                border-radius: 100%;
+
+                background-color: rgba(236, 240, 241, .3);
+
+                -webkit-transform: translate(-50%, -50%);
+                -moz-transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                -o-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+
+            .btn:active:before {
+                width: 120%;
+                padding-top: 120%;
+
+                transition: width .2s ease-out, padding-top .2s ease-out;
+            }
+
+            #real {
+                background-color: #27ae60;
+                float: left;
+                margin-left: 25px;
+            }
+
+            #fake {
+                background-color: darkred;
+                float: left;
+                margin-right: 25px;
+            }
+        </style>
+
+    <title>Title</title>
+</head>
+<body>
+
+{% if initial %}
+
+    <div class="flex-container">
+        <div class="row">
+            <div class="flex-item">
+                <img style="height: 600px; width: 450px; display:block; margin:auto;" id="current-img" src="/screenshots/{{ initial }}.jpeg"/>
+            </div>
+            <div class="flex-item">
+                <p id="alert"></p>
+            </div>
+            <div class="flex-item">
+                <div style="display: inline-block">
+                    <input id="fake" class="btn" type="button" value="Fake"/>
+                    <input id="real" class="btn" type="button" value="Real"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% else %}
+    No more pictures to rate!
+{% endif %}
+
+    <script>
+
+    </script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+
+
+</body>
+</html>

@@ -4,6 +4,8 @@ import json
 import sys
 import sqlite3
 
+max = 888
+
 
 def make_json(filename, usernames):
     data = {}
@@ -15,65 +17,68 @@ def make_json(filename, usernames):
     conn = sqlite3.connect('accounts.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS accounts (username text, name text, account_type text, public numeric, 
-    description text, followers integer, following integer, posts integer, UNIQUE (username))''')
+    description text, followers integer, following integer, posts integer, fake numeric, UNIQUE (username))''')
     conn.commit()
+
     for user in usernames:
-        try:
-            html = requests.get("https://www.instagram.com/{0}/".format(user)).text
-        except TimeoutError:
-            print("Timed out", user)
-            continue
-        except ConnectionResetError:
-            print("Connection reset", user)
-            continue
-
-        # if alternateName doesn't exist, profile is private
-        try:
-            text = html.split('<script type="application/ld+json">')[1].split('</script>')[0]
-        except IndexError:
-            continue
-        data = json.loads(text)
-        name = ""
-        try:
-            username = data["alternateName"][1:]
-            public = True
-        except KeyError:
-            username = data["name"][1:]
-            public = False
-        try:
-            account_type = data["@type"]
-        except KeyError:
-            account_type = ""
-        if public:
+        if count < max:
             try:
-                name = data["name"].replace(",", " ").replace("、", " ").replace("，", " ")
+                html = requests.get("https://www.instagram.com/{0}/".format(user)).text
+            except TimeoutError:
+                print("Timed out", user)
+                continue
+            except ConnectionResetError:
+                print("Connection reset", user)
+                continue
+
+            # if alternateName doesn't exist, profile is private
+            try:
+                text = html.split('<script type="application/ld+json">')[1].split('</script>')[0]
+            except IndexError:
+                continue
+            data = json.loads(text)
+            name = ""
+            try:
+                username = data["alternateName"][1:]
+                public = True
             except KeyError:
-                name = ""
-        try:
-            bio_description = " ".join(data["description"].replace(",", " ").replace("、", " ").replace("，", " ").split())
-        except KeyError:
-            bio_description = ""
+                username = data["name"][1:]
+                public = False
+            try:
+                account_type = data["@type"]
+            except KeyError:
+                account_type = ""
+            if public:
+                try:
+                    name = data["name"].replace(",", " ").replace("、", " ").replace("，", " ")
+                except KeyError:
+                    name = ""
+            try:
+                bio_description = " ".join(data["description"].replace(",", " ").replace("、", " ").replace("，", " ").split())
+            except KeyError:
+                bio_description = ""
 
-        # get followers, following, etc
-        soup = BeautifulSoup(html, features="html.parser")
-        for tag in soup.find_all("meta"):
-            if tag.get("property", None) == "og:description":
-                description = tag.get("content", None)
+            # get followers, following, etc
+            soup = BeautifulSoup(html, features="html.parser")
+            for tag in soup.find_all("meta"):
+                if tag.get("property", None) == "og:description":
+                    description = tag.get("content", None)
 
-                first_block = description.split("Followers")
+                    first_block = description.split("Followers")
 
-                followers = parse_number(first_block[0].replace(',', '').strip())
-                following = parse_number(first_block[1].split("Following")[0].replace(',', '').strip())
-                posts = parse_number(description.split("Posts")[0].split("Following")[1].replace(',', '').strip())
+                    followers = parse_number(first_block[0].replace(',', '').strip())
+                    following = parse_number(first_block[1].split("Following")[0].replace(',', '').strip())
+                    posts = parse_number(description.split("Posts")[0].split("Following")[1].replace(',', '').strip())
 
-                f.write("{0},{1},{2},{3},{4},{5},{6},{7}\n".format(username, name, account_type, public,
-                                                               bio_description, following, followers, posts))
-                count += 1
-                c.execute("INSERT INTO accounts VALUES (\'%s\', \'%s\', \'%s\', %d, \'%s\', %d, %d, %d)" %
-                          (username, name, account_type, public, bio_description, followers, following, posts))
-                conn.commit()
-                print("Completed {0} out of {1}".format(count, len(usernames)))
-
+                    f.write("{0},{1},{2},{3},{4},{5},{6},{7}\n".format(username, name, account_type, public,
+                                                                   bio_description, following, followers, posts))
+                    count += 1
+                    c.execute("INSERT INTO accounts VALUES (\'%s\', \'%s\', \'%s\', %d, \'%s\', %d, %d, %d, -1)" %
+                              (username, name, account_type, public, bio_description, followers, following, posts))
+                    conn.commit()
+                    print("{0}/{1} - get account info".format(count, len(usernames)))
+        else:
+            break
     return data
 
 
