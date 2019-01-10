@@ -3,7 +3,7 @@
 Determine whether a user is genuine or a bot, based on their follower/following ratio, name, and bio
 
 This is an example of a 'fake' account:
-![fake account](https://raw.githubusercontent.com/ethanzh/instabot/master/static/fake_account.png)
+<img src="https://raw.githubusercontent.com/ethanzh/instabot/master/static/fake_account.png" width=200>
 
 
 ### TODO
