@@ -9,6 +9,7 @@ This is an example of a 'fake' account:
 ### TODO
 - [x] Get basic information from account, given username 
 - [x] Populate CSV with all account information
+- [ ] Make screenshot module only run if a screenshot doesn't already exist
 - [ ] Decide on a reliable list of accounts to crawl
 - [ ] Determine which features are most important when classifying accounts as real or fake
 
