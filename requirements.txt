@@ -1,2 +1,4 @@
 requests
+pyppeteer
+keras
 beautifulsoup4

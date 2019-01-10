@@ -4,3 +4,6 @@ venv
 __pycache__
 scrape_data.txt
 scrape_data.csv
+accounts.db
+test.csv
+.ipynb_checkpoints
